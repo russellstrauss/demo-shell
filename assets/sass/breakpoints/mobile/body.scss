@@ -1,0 +1,27 @@
+@import url(https://fonts.googleapis.com/css?family=Inconsolata);
+
+body {
+	background: black;
+}
+.hidden {
+	opacity: 0;
+}
+.console-container {
+	font-family: 'Inconsolata', monospace;
+	font-size: 18px;
+	text-align: left;
+	height: 100vh;
+	width: 100vw;
+	display: block;
+	position: fixed;
+	color: #00e500;
+	margin: auto;
+	padding: 15px;
+}
+.console-underscore {
+	display: inline-block;
+	position: relative;
+	vertical-align: text-bottom;
+	font-size: 13px;
+	margin-left: 3px;
+}
