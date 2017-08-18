@@ -4,11 +4,4 @@
 @import 'mixins.scss';
 @import 'global.scss';
 
-/* MOBILE FIRST! */
-@import 'mobile/body.scss';
-@media (min-width: $bp-tablet-min) { // Then import tablet, inheriting everything from mobile, overiding mobile styles where necessary
-	@import 'tablet/body.scss';
-}
-@media (min-width: $bp-desktop-min) { // Then import desktop, inheriting mobile and tablet. Override style from other two breakpoints where necessary.
-	@import 'desktop/body.scss';
-}
+@import 'style.scss';
