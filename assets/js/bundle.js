@@ -18,7 +18,9 @@ module.exports = function() {
 		
 		bindUI: function() {
 			
-			
+			$('.box').click(function() {
+				$(this).toggleClass('open');
+			});
 						
 		}
 	}
