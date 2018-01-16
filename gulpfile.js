@@ -7,7 +7,9 @@ var rename = require('gulp-rename');
 var source = require('vinyl-source-stream'); // required to dest() for browserify
 var browserSync = require('browser-sync').create();
 var concat = require('gulp-concat');
-var gutil = require('gulp-util');
+var notifier = require('node-notifier');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 gulp.task('sass', function () {
 	return gulp.src('./assets/sass/main.scss')
@@ -37,22 +39,35 @@ var vendors = {
 gulp.task('vendors', function() {
 	return gulp.src(vendors.merge)
 		.pipe(concat('vendors.js'))
+		//.pipe(uglify())
+		//.pipe(gulp.dest(localSettings.publishFolder + '/assets/vendors/js/'))
 		.pipe(gulp.dest('./assets/vendors/js/'));
 });
 
 gulp.task('javascript', function() {
+		
+	var bundleStream = browserify('./assets/js/main.js').bundle().on('error', function(err) {
 
-	var bundleStream = browserify('./assets/js/main.js').bundle();
+		console.log(err.stack);
+		notifier.notify({
+			'title': 'Browserify Compilation Error',
+			'message': err.message
+		});
+		this.emit('end');
+	});
 
 	return bundleStream
 		.pipe(source('main.js'))
 		.pipe(rename('bundle.js'))
 		.pipe(gulp.dest('./assets/js/'))
+		//.pipe(gulp.dest(localSettings.publishFolder + '/assets/js/'))
 		.pipe(browserSync.stream());
-		
-		bundleStream.on('error', function(e) {
-			gutil.log(e);
-		});
+});
+
+gulp.task('validateJS', function() {
+	return gulp.src(['./assets/js/**/*.js', '!./assets/js/bundle.js'])
+		.pipe(jshint())
+		.pipe(jshint.reporter(stylish));
 });
 
 gulp.task('HTML', function() {
@@ -62,7 +77,7 @@ gulp.task('HTML', function() {
 
 gulp.task('watch', function() {
 	gulp.watch('./assets/sass/**/*.scss', ['sass']);
-	gulp.watch('./assets/js/**/*.js', ['javascript']);
+	gulp.watch(['./assets/js/**/*.js', '!./assets/js/bundle.js'], ['javascript']);
 	gulp.watch('./**/*.html', ['HTML']);
 	gulp.watch(['./assets/vendors/js/*.js', '!./assets/vendors/js/vendors.min.js'], ['vendors']);
 });
