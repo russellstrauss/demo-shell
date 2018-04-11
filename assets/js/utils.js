@@ -6,24 +6,30 @@
 		
 		return {
 			appSettings: {
-				mobileMax: 767,
-				tabletMin: 768,
-				tabletMax: 991,
-				desktopMin: 992,
-				desktopLargeMin: 1200
+				breakpoints: {
+					mobileMax: 767,
+					tabletMin: 768,
+					tabletMax: 991,
+					desktopMin: 992,
+					desktopLargeMin: 1200
+				}
 			},
 			
 			mobile: function() {
-				return window.innerWidth < appSettings.tabletMin;
+				return window.innerWidth < this.appSettings.breakpoints.tabletMin;
 			},
 			
 			tablet: function() {
-				return (window.innerWidth > appSettings.mobileMax && window.innerWidth < appSettings.desktopMin);
+				return (window.innerWidth > this.appSettings.breakpoints.mobileMax && window.innerWidth < this.appSettings.breakpoints.desktopMin);
+			},
+			
+			desktop: function() {
+				return window.innerWidth > this.appSettings.breakpoints.desktopMin;
 			},
 			
 			getBreakpoint: function() {
-				if (window.innerWidth < appSettings.tabletMin) return 'mobile';
-				else if (window.innerWidth < appSettings.desktopMin) return 'tablet';
+				if (window.innerWidth < this.appSettings.breakpoints.tabletMin) return 'mobile';
+				else if (window.innerWidth < this.appSettings.breakpoints.desktopMin) return 'tablet';
 				else return 'desktop';
 			},
 			
