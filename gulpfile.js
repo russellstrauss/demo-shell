@@ -10,6 +10,7 @@ var concat = require('gulp-concat');
 var notifier = require('node-notifier');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var babel = require('gulp-babel');
 
 gulp.task('sass', function () {
 	return gulp.src('./assets/sass/main.scss')
@@ -40,27 +41,27 @@ gulp.task('vendors', function() {
 	return gulp.src(vendors.merge)
 		.pipe(concat('vendors.js'))
 		//.pipe(uglify())
-		//.pipe(gulp.dest(localSettings.publishFolder + '/assets/vendors/js/'))
 		.pipe(gulp.dest('./assets/vendors/js/'));
 });
 
 gulp.task('javascript', function() {
 		
-	var bundleStream = browserify('./assets/js/main.js').bundle().on('error', function(err) {
-
-		console.log(err.stack);
-		notifier.notify({
-			'title': 'Browserify Compilation Error',
-			'message': err.message
+	var bundleStream = browserify('./assets/js/main.js')
+		.transform("babelify", {presets: ["@babel/preset-env"]})
+		.bundle()
+		.on('error', function(err) {
+			console.log(err.stack);
+			notifier.notify({
+				'title': 'Browserify Compilation Error',
+				'message': err.message
+			});
+			this.emit('end');
 		});
-		this.emit('end');
-	});
 
 	return bundleStream
 		.pipe(source('main.js'))
 		.pipe(rename('bundle.js'))
 		.pipe(gulp.dest('./assets/js/'))
-		//.pipe(gulp.dest(localSettings.publishFolder + '/assets/js/'))
 		.pipe(browserSync.stream());
 });
 

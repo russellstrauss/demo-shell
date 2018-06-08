@@ -101,6 +101,10 @@
 			getTransitionDuration: function(element) {
 				var $element = $(element);
 				return utils.secondsToMilliseconds(parseFloat(getComputedStyle($element[0])['transitionDuration']));
+			},
+			
+			isInteger: function(number) {
+				return number % 1 === 0;
 			}
 		}
 	})();
