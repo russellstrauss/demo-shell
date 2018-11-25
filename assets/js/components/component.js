@@ -10,15 +10,7 @@ module.exports = function() {
 		
 		init: function() {
 			
-			settings = this.settings;
 			
-			this.bindUI();
-		},
-		
-		bindUI: function() {
-			
-			
-						
 		}
 	}
 }
