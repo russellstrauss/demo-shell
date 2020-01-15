@@ -21,7 +21,7 @@ gulp.task('sass', function () {
 	.pipe(browserSync.stream()); // causes injection of styles on save
 });
 
-gulp.task('sync', ['sass'], function() {
+gulp.task('sync', gulp.series('sass'), function() {
 	browserSync.init({
 		open: true,
 		server: {
@@ -90,4 +90,4 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['vendors', 'javascript', 'sass', 'watch', 'sync']);
+gulp.task('default', gulp.parallel('vendors', 'javascript', 'sass', 'watch', 'sync'));
